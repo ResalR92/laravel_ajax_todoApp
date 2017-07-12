@@ -8,6 +8,10 @@ use Auth;
 
 class TodoListsController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -26,7 +30,8 @@ class TodoListsController extends Controller
      */
     public function create()
     {
-        //
+        $todoList = new TodoList();
+        return view('todolists.form',compact('todoList'));
     }
 
     /**

@@ -1,6 +1,15 @@
 $('.show-todolist-modal').click(function(event) {
     event.preventDefault();
-
+    //memanggil todolist->form
+    var url = $(this).attr('href');
+    $.ajax({
+        url: url,
+        dataType: 'html',
+        success: function(response) {
+            // console.log('berhasil');// menambahkan form ke modal->body
+            $('#todo-list-body').html(response);
+        }
+    });
     $('#todolist-modal').modal('show');
 });
 
