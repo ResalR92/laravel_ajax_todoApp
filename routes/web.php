@@ -12,5 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	if (Auth::guest()) {
+		return view('auth.login');
+	}
+	return redirect('/todolists');
 });
+
+Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('todolists','TodoListsController');
