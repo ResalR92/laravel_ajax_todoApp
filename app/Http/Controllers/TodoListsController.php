@@ -42,7 +42,17 @@ class TodoListsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title'=>'required|min:5',
+            'description' => 'sometimes|min:5'
+        ]);
+        //mengembalikan sebagai response object JSON
+        //TodoList::create($data);
+        //menyimpan todoList berdasarkan relasi user->todolist
+        //sehingga nilai "user_id" dapat diperoleh
+        $todoList = Auth::user()->todoLists()->create($request->all());
+
+        return view("todolists.item", compact('todoList'));
     }
 
     /**
