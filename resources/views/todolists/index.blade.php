@@ -25,6 +25,8 @@
 	<div class="container">
 	    <div class="row">
 	        <div class="col-md-8 col-md-offset-2">
+	        	{{-- flash message --}}
+	        	<div class="alert alert-success" id="add-new-alert" style="display:none;"></div>
 	        	<?php $count = $todoLists->count(); ?>
 	        	<div class="alert alert-warning {{ $count ? 'hidden' : '' }}" id="no-record-alert">
 	        		No records found.

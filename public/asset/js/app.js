@@ -13,6 +13,21 @@ $('.show-todolist-modal').click(function(event) {
     $('#todolist-modal').modal('show');
 });
 
+function showMessage(message) {
+    $('#add-new-alert').text(message).fadeTo(1000,500).slideUp(1000, function() {
+        $(this).hide();
+    });
+}
+
+function updateTodoListCounter() {
+    var total = $('.list-group-item').length;
+    $('#todo-list-counter').text(total).next().text(total > 1 ? 'records' : 'record');
+}
+//mencegah submit dengan tombol enter
+$('#todolist-modal').on('keypress',":input:not(textarea)", function(event) {
+    //13 adalah tombol enter
+    return event.keyCode != 13;
+});
 //menghandel tombol save pada todolist create
 $('#todo-list-save-btn').click(function(event) {
     event.preventDefault();
@@ -35,6 +50,16 @@ $('#todo-list-save-btn').click(function(event) {
             // console.log(response);
             $('#todo-list').prepend(response);
             $('#todolist-modal').modal('hide');
+
+            //flash message
+            showMessage("Todo list has been created.");
+
+
+            //jika flash message ada dalam form
+            // form.trigger('reset');
+            // $('#title').focus();
+
+            updateTodoListCounter();
         },
         error: function(xhr) {
             //menyimpan xhr untuk pesan error
