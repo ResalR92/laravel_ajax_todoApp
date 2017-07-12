@@ -7,7 +7,7 @@
         <a href="#" class="btn btn-info show-task-modal btn-xs" title="Manage Tasks">
             <i class="glyphicon glyphicon-ok"></i>
         </a>
-        <a href="#" class="btn btn-default show-todolist-modal btn-xs" title="Edit">
+        <a href="{{ route('todolists.edit', $todoList->id) }}" class="btn btn-default show-todolist-modal btn-xs edit" title="Edit {{ $todoList->title }}">
             <i class="glyphicon glyphicon-edit"></i>
         </a>
         <a href="#" class="btn btn-danger btn-xs" title="Delete">

@@ -1,7 +1,17 @@
-$('.show-todolist-modal').click(function(event) {
+// $('.show-todolist-modal').click(function(event) {
+//mengaktifkan edit pada form yang BARU selesai di EDIT karena element hanya di load dengan AJAX
+$('body').on('click','.show-todolist-modal',function(event) {
     event.preventDefault();
     //memanggil todolist->form
-    var url = $(this).attr('href');
+    // var url = $(this).attr('href');
+    //menggunakan attribute title
+    var me = $(this);
+    var url = me.attr('href');
+    var title = me.attr('title');
+
+    $('#todo-list-title').text(title);
+    $('#todo-list-save-btn').text(me.hasClass('edit') ? 'Update' : 'Create New');
+
     $.ajax({
         url: url,
         dataType: 'html',
@@ -13,8 +23,16 @@ $('.show-todolist-modal').click(function(event) {
     $('#todolist-modal').modal('show');
 });
 
-function showMessage(message) {
-    $('#add-new-alert').text(message).fadeTo(1000,500).slideUp(1000, function() {
+// function showMessage(message) {
+//     $('#add-new-alert').text(message).fadeTo(1000,500).slideUp(1000, function() {
+//         $(this).hide();
+//     });
+// }
+
+//jika memiliki alert pada element yang berbeda
+function showMessage(message, element) {
+    var alert = element == undefined ? '#add-new-alert' : element;
+    $(alert).text(message).fadeTo(1000,500).slideUp(1000, function() {
         $(this).hide();
     });
 }
@@ -35,7 +53,8 @@ $('#todo-list-save-btn').click(function(event) {
     //mendapatkan url dari action todolist create -> modal body
     var form = $('#todo-list-body form');
     var url = form.attr('action');
-    var method = "POST";
+    // var method = "POST";
+    var method = $('input[name=_method').val() == undefined ? 'POST' : 'PUT';
     // console.log(url);
 
     //reset error message
@@ -47,19 +66,38 @@ $('#todo-list-save-btn').click(function(event) {
         method: method,
         data: $('#todo-list-body form').serialize(),//mengambil semua data form dalam bentuk "url encode"
         success: function(response) {
-            // console.log(response);
-            $('#todo-list').prepend(response);
-            $('#todolist-modal').modal('hide');
+            if(method == 'POST') {
+                // console.log(response);
+                $('#todo-list').prepend(response);
+                $('#todolist-modal').modal('hide');
 
-            //flash message
-            showMessage("Todo list has been created.");
+                //flash message
+                showMessage("Todo list has been created.");
 
 
-            //jika flash message ada dalam form
-            // form.trigger('reset');
-            // $('#title').focus();
+                //jika flash message ada dalam form
+                // form.trigger('reset');
+                // $('#title').focus();
 
-            updateTodoListCounter();
+                updateTodoListCounter();
+            }
+            //response untuk update
+            else {
+                var id = $('input[name=id]').val();
+                if(id) {
+                    //menimpa item yang lama
+                    // $('#todo-list-'+id).replaceWith(response);
+                    //cara lain, item baru langsung berada di list paling atas
+                    $('#todo-list-'+id).remove();
+                    $('#todo-list').prepend(response);
+                }
+                $('#todolist-modal').modal('hide');
+
+                //flash message
+                showMessage("Todo list has been updated.");
+
+            }
+            
         },
         error: function(xhr) {
             //menyimpan xhr untuk pesan error
