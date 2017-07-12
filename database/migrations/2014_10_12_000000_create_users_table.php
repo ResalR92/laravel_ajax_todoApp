@@ -33,3 +33,45 @@ class CreateUsersTable extends Migration
         Schema::dropIfExists('users');
     }
 }
+
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ php artisan migrate:install
+// Migration table created successfully.
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ php artisan migrate:status
+// +------+------------------------------------------------+
+// | Ran? | Migration                                      |
+// +------+------------------------------------------------+
+// | N    | 2014_10_12_000000_create_users_table           |
+// | N    | 2014_10_12_100000_create_password_resets_table |
+// +------+------------------------------------------------+
+
+//menjalankan method up migration
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ php artisan migrate
+// Migrating: 2014_10_12_000000_create_users_table
+// Migrated:  2014_10_12_000000_create_users_table
+// Migrating: 2014_10_12_100000_create_password_resets_table
+// Migrated:  2014_10_12_100000_create_password_resets_table
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ php artisan migrate:status
+// +------+------------------------------------------------+
+// | Ran? | Migration                                      |
+// +------+------------------------------------------------+
+// | Y    | 2014_10_12_000000_create_users_table           |
+// | Y    | 2014_10_12_100000_create_password_resets_table |
+// +------+------------------------------------------------+
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ 
+
+//menjalankan method down migration
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ php artisan migrate:rollback
+// Rolling back: 2014_10_12_100000_create_password_resets_table
+// Rolled back:  2014_10_12_100000_create_password_resets_table
+// Rolling back: 2014_10_12_000000_create_users_table
+// Rolled back:  2014_10_12_000000_create_users_table
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ 
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ php artisan migrate:status
+// +------+------------------------------------------------+
+// | Ran? | Migration                                      |
+// +------+------------------------------------------------+
+// | N    | 2014_10_12_000000_create_users_table           |
+// | N    | 2014_10_12_100000_create_password_resets_table |
+// +------+------------------------------------------------+
+// resal@resal-Inspiron-11-3162:/var/www/html/laravel/latihan/todoapp$ 
+

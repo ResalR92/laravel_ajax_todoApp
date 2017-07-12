@@ -51,7 +51,7 @@ h1.header-title {
 }
 
 .list-group-item:hover .buttons, table.table tr:hover .row-buttons {
-    display: block;
+    display: block; /*menampilkan button action saat HOVER list item*/
 }
 
 .list-group-item-heading {
@@ -69,7 +69,7 @@ h1.header-title {
     top: 10px;
     right: 10px;
     text-align: center;
-    display: none;
+    display: none; /*menyembunyikan button action*/
 }
 
 .panel-footer small, .modal-footer small {
