@@ -128,11 +128,11 @@ $('#todo-list-save-btn').click(function(event) {
     });
 });
 
-$('.show-task-modal').click(function(event) {
-    event.preventDefault();
+// $('.show-task-modal').click(function(event) {
+//     event.preventDefault();
 
-    $('#task-modal').modal('show');
-});
+//     $('#task-modal').modal('show');
+// });
 
 
 //show modal DELETE
@@ -173,7 +173,38 @@ $('#confirm-remove-btn').click(function(event) {
     });
 });
 
-$(function() {
+function countActiveTasks() {
+    var total = $('tr.task-item:not(:has(td.done))').length;
+
+    $('#active-tasks-counter').text(total +" "+(total > 1 ? "tasks" : "task") +" left" );
+}
+
+//task list
+$('body').on('click','.show-task-modal',function(event) {
+    event.preventDefault();
+
+    var anchor = $(this);
+    var url = anchor.attr('href');
+    var title = anchor.data('title');
+
+    $('#task-modal-subtitle').text(title);
+
+    $.ajax({
+        url: url,
+        dataType: 'html',
+        success: function(response) {
+            $('#task-table-body').html(response);
+            initIcheck();
+            //menghitung task->active
+            countActiveTasks();
+        }
+    });
+
+    $('#task-modal').modal('show');
+});
+
+// $(function() {
+function initIcheck() {
     $('input[type=checkbox]').iCheck({
         checkboxClass: 'icheckbox_square-green',
         increaseArea: '20%'
@@ -186,4 +217,26 @@ $(function() {
     $('#check-all').on('ifUnchecked', function(e) {
         $('.check-item').iCheck('uncheck');
     });
+}
+
+
+//filter button task
+$('.filter-btn').click(function(e) {
+    e.preventDefault();
+
+    var id = this.id;
+    //tombol active->dinamis
+    $(this).addClass('active').parent().children().not(e.target).removeClass('active');
+
+    if(id == "all-tasks") {
+        $('tr.task-item').show();
+    }
+    else if(id == "active-tasks") {
+        $('tr.task-item:has(td.done)').hide();
+        $('tr.task-item:not(:has(td.done))').show();
+    }
+    else if(id == "completed-tasks") {
+        $('tr.task-item:has(td.done)').show();
+        $('tr.task-item:not(:has(td.done))').hide();
+    }
 });

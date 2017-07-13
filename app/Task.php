@@ -12,4 +12,9 @@ class Task extends Model
     {
     	return $this->belongsTo(Todolist::class);
     }
+
+    public function getCompletedAttribute()
+    {
+    	return !is_null($this->completed_at);
+    }
 }
