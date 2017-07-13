@@ -163,6 +163,8 @@ $('#confirm-remove-btn').click(function(event) {
             $('#todo-list-'+data.id).fadeOut(function() {
                 $(this).remove();
                 updateTodoListCounter();
+
+                showMessage('Todo list has been deleted.');
             });
         },
         error: function(xhr) {
