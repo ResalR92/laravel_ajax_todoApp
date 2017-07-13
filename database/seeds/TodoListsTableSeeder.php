@@ -34,12 +34,15 @@ class TodoListsTableSeeder extends Seeder
         	];
 
             for ($j=1; $j <= rand(1,5); $j++) { 
+
+                //tanggal dinamis tasks
+                $taskDate = date("Y-m-d H:i:s", strtotime("{$date} + {$j} minutes"));
                 $tasks[] = [
                     'todo_list_id' => $i,
                     'title' => $faker->sentence,
-                    'created_at' => $date,
-                    'updated_at' => $date,
-                    'completed_at' => rand(0,1) == 0 ? NULL : $date
+                    'created_at' => $taskDate,
+                    'updated_at' => $taskDate,
+                    'completed_at' => rand(0,1) == 0 ? NULL : $taskDate
                 ];
             }
         }

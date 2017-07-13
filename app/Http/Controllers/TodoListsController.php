@@ -19,8 +19,12 @@ class TodoListsController extends Controller
      */
     public function index(Request $request)
     {
-        $todoLists = Auth::user()->todoLists()->orderBy('updated_at','desc')->get();
+        // \DB::enableQueryLog();
+        $todoLists = Auth::user()->todoLists()->with('tasks')->orderBy('updated_at','desc')->get();//eager loading
+        // view('todolists.index', compact('todoLists'))->render();
         return view('todolists.index', compact('todoLists'));
+
+        // dd(\DB::getQueryLog());
     }
 
     /**
@@ -63,7 +67,13 @@ class TodoListsController extends Controller
      */
     public function show($id)
     {
-        //
+        $todoList = TodoList::findOrFail($id);
+        // $tasks = $todoList->tasks()->orderBy('created_at','desc')->get();
+        $tasks = $todoList->tasks()->latest()->get();
+
+        // dd($tasks);
+
+        return view('tasks.index',compact('tasks'));
     }
 
     /**

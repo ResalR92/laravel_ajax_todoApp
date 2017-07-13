@@ -17,47 +17,7 @@
                         <input type="text" placeholder="Enter New Task" class="task-input">
                     </td>
                 </thread>
-                <tbody>
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="check-item">
-                        </td>
-                        <td  class="task-item done">
-                            The first Task
-                            <div class="row-buttons">
-                                <a href="#" class="btn btn-xs btn-danger">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="check-item">
-                        </td>
-                        <td  class="task-item">
-                            The second Task
-                            <div class="row-buttons">
-                                <a href="#" class="btn btn-xs btn-danger">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <input type="checkbox" class="check-item">
-                        </td>
-                        <td  class="task-item">
-                            The third Task
-                            <div class="row-buttons">
-                                <a href="#" class="btn btn-xs btn-danger">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </a>
-                            </div>
-                        </td>
-                    </tr>
-                </tbody>
+                <tbody id="task-table-body"></tbody>
             </table>
         </div>
       </div>
