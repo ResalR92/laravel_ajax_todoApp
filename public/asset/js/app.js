@@ -40,7 +40,22 @@ function showMessage(message, element) {
 function updateTodoListCounter() {
     var total = $('.list-group-item').length;
     $('#todo-list-counter').text(total).next().text(total > 1 ? 'records' : 'record');
+
+    showNoRecordMessage(total);
 }
+
+//pesan record kosong
+function showNoRecordMessage(total) {
+    if(total > 0 ) {
+        $('#todo-list').closest('.panel').removeClass('hidden');
+        $('#no-record-alert').addClass('hidden');
+    }
+    else {
+        $('#todo-list').closest('.panel').addClass('hidden');
+        $('#no-record-alert').removeClass('hidden');
+    }
+}
+
 //mencegah submit dengan tombol enter
 $('#todolist-modal').on('keypress',":input:not(textarea)", function(event) {
     //13 adalah tombol enter
@@ -117,6 +132,43 @@ $('.show-task-modal').click(function(event) {
     event.preventDefault();
 
     $('#task-modal').modal('show');
+});
+
+
+//show modal DELETE
+$('body').on('click','.show-confirm-modal',function(event) {
+    event.preventDefault();
+
+    var me = $(this);
+    var title = me.attr('data-title');
+    var action = me.attr('href');
+
+    $('#confirm-body form').attr('action',action);
+    $('#confirm-body p').html("Are you sure to delete tode list: <strong>"+title+"</strong> ?");
+    $('#confirm-modal').modal('show');
+});
+
+//tombol DELETe
+$('#confirm-remove-btn').click(function(event) {
+    event.preventDefault();
+
+    var form = $('#confirm-body form');
+    var url = form.attr('action');
+    $.ajax({
+        url: url,
+        method: 'DELETE',
+        data: form.serialize(),
+        success: function(data) {
+            $('#confirm-modal').modal('hide');
+            $('#todo-list-'+data.id).fadeOut(function() {
+                $(this).remove();
+                updateTodoListCounter();
+            });
+        },
+        error: function(xhr) {
+
+        }
+    });
 });
 
 $(function() {
