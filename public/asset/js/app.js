@@ -252,6 +252,38 @@ function initIcheck() {
     $('#check-all').on('ifUnchecked', function(e) {
         $('.check-item').iCheck('uncheck');
     });
+
+    //event handler checkbox->completed
+    $('body').on('ifChecked','.check-item', function(e) {
+        var checkbox = $(this);
+        var url = checkbox.data('url');
+        var completed = checkbox.is(":checked");
+
+        // alert('it work');
+        $.ajax({
+            url: url,
+            type: 'PUT',
+            data: {
+                completed: completed,
+                _token: $("input[name=_token]").val()
+            },
+            success: function(response) {
+                if(response) {
+                    var nextId = checkbox.closest('td').next();
+                    if(completed) {
+                        nextId.addClass('done');
+                    }
+                    else {
+                        nextId.removeClass('done');
+                    }
+
+                    //memanggil fungsi mengupdate task aktif
+                    countActiveTasks();
+                }
+            }
+        });
+
+    });
 }
 
 
