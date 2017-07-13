@@ -238,6 +238,36 @@ $('#task-form').submit(function(e) {
     });
 });
 
+//fungsi toggle checkbox task complete
+function markTheTask(checkbox) {
+    var url = checkbox.data('url');
+    var completed = checkbox.is(":checked");
+
+    // alert('it work');
+    $.ajax({
+        url: url,
+        type: 'PUT',
+        data: {
+            completed: completed,
+            _token: $("input[name=_token]").val()
+        },
+        success: function(response) {
+            if(response) {
+                var nextId = checkbox.closest('td').next();
+                if(completed) {
+                    nextId.addClass('done');
+                }
+                else {
+                    nextId.removeClass('done');
+                }
+
+                //memanggil fungsi mengupdate task aktif
+                countActiveTasks();
+            }
+        }
+    });
+}
+
 // $(function() {
 function initIcheck() {
     $('input[type=checkbox]').iCheck({
@@ -254,36 +284,14 @@ function initIcheck() {
     });
 
     //event handler checkbox->completed
-    $('body').on('ifChecked','.check-item', function(e) {
-        var checkbox = $(this);
-        var url = checkbox.data('url');
-        var completed = checkbox.is(":checked");
-
-        // alert('it work');
-        $.ajax({
-            url: url,
-            type: 'PUT',
-            data: {
-                completed: completed,
-                _token: $("input[name=_token]").val()
-            },
-            success: function(response) {
-                if(response) {
-                    var nextId = checkbox.closest('td').next();
-                    if(completed) {
-                        nextId.addClass('done');
-                    }
-                    else {
-                        nextId.removeClass('done');
-                    }
-
-                    //memanggil fungsi mengupdate task aktif
-                    countActiveTasks();
-                }
-            }
-        });
-
-    });
+    $('.check-item').on('ifChecked', function(e) {
+                    var checkbox = $(this);
+                    markTheTask(checkbox);
+                })
+                .on('ifUnchecked', function(e) {
+                    var checkbox = $(this);
+                    markTheTask(checkbox);
+                });
 }
 
 
@@ -306,4 +314,27 @@ $('.filter-btn').click(function(e) {
         $('tr.task-item:has(td.done)').show();
         $('tr.task-item:not(:has(td.done))').hide();
     }
+});
+
+
+//hapus task
+$('#task-table-body').on('click','.remove-task-btn', function(e) {
+    e.preventDefault();
+
+    var url = $(this).attr('href');
+
+    $.ajax({
+        url: url,
+        type: 'DELETE',
+        data: {
+            _token: $('input[name=_token]').val()
+        },
+        success: function(response) {
+            $('#task-'+response.id).fadeOut(function() {
+                $(this).remove();
+                countActiveTasks();
+                countAllTasksOfSelectedList();
+            });
+        }
+    });
 });

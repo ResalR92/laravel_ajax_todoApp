@@ -25,9 +25,17 @@ class TasksController extends Controller
     public function update(Request $request, $todoListId, $id)
     {
         $task = Task::findOrFail($id);
-        $task->completed_at = $request['completed'] == true ? Carbon::now() : NULL;
+        $task->completed_at = $request->completed == "true" ? Carbon::now() : NULL;
         $affectedRow = $task->update();
 
         echo $affectedRow;
+    }
+
+    public function destroy($todoListId, $id)
+    {
+        $task = Task::findOrFail($id);
+        $task->delete();
+
+        return $task;
     }
 }
