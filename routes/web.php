@@ -23,3 +23,4 @@ Auth::routes();
 // Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('todolists','TodoListsController');
+Route::resource('todolists.tasks','TasksController',['only'=>['store','update','destroy']]);

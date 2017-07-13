@@ -186,8 +186,14 @@ $('body').on('click','.show-task-modal',function(event) {
     var anchor = $(this);
     var url = anchor.attr('href');
     var title = anchor.data('title');
+    var action = anchor.data('action');
+    var parent = anchor.closest('.list-group-item');
 
     $('#task-modal-subtitle').text(title);
+    //action form tambah task baru
+    $('#task-form').attr('action',action);
+
+    $('#selected-todo-list').val(parent.attr('id'));
 
     $.ajax({
         url: url,
@@ -201,6 +207,35 @@ $('body').on('click','.show-task-modal',function(event) {
     });
 
     $('#task-modal').modal('show');
+});
+//memperbaiki jumlah task pada todolist terpilih
+function countAllTasksOfSelectedList() {
+    var total = $('#task-table-body tr').length;
+    var selectedTodoListId = $('#selected-todo-list').val();
+
+    //mengambil todolist terpilih berdasarkan ID
+    $('#'+selectedTodoListId).find('span.badge').text(total+" "+(total > 1 ? 'tasks' : 'task'));
+}
+//form tambah task baru
+$('#task-form').submit(function(e) {
+    e.preventDefault();
+
+    var form = $(this);
+    var action = form.attr('action');
+
+    $.ajax({
+        url: action,
+        type: 'POST',
+        data: form.serialize(),
+        success: function(response) {
+            $('#task-table-body').prepend(response);
+            form.trigger('reset');  
+            countActiveTasks();
+            initIcheck();   
+            //memperbaiki jumlah task pada todolist terpilih
+            countAllTasksOfSelectedList();
+        }
+    });
 });
 
 // $(function() {
